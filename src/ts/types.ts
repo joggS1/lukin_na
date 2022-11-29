@@ -10,3 +10,9 @@ export type ExampleMessage = {
 export type EchoMessage = {
     isEcho: boolean
 } & ExampleMessage;
+
+export type SignUpMessage= {
+    isSignUp: boolean,
+    message: string,
+    date: string
+}
