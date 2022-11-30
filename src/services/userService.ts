@@ -1,56 +1,33 @@
 import { SignUpMessage} from "../ts/types";
 import { userModel } from "../models/userModel";
 import { hashString } from "../middlewares/hashString";
+import { HttpError } from "../utils/httpError";
+import ApiResponseHandler from "../api/http/apiResponseHandler";
+import { convertToObject } from "typescript";
 
 export default class UserService {
 
-     static async createUser(_email:string, _username: string, _password: string): Promise<SignUpMessage> {
+     static async createUser(_email:string, _username: string, _password: string) {
         try {
-            
-            if( await userModel.findOne({email: _email})){
-                return {
-                    isSignUp: true,
-                    message: 'User with this email already exists',
-                    date: new Date().toISOString()
-                };
-            } else if(await userModel.findOne({username: _username})){
-                return {
-                    isSignUp: true,
-                    message: 'User with this username already exists',
-                    date: new Date().toISOString()
-                };
-            }
-            
+           
             const hashPassword = await hashString(_password)
-            console.log(hashPassword)
-            console.log(_email)     
-            console.log(_username)     
-
             const user = new userModel({email: _email, username: _username, password: hashPassword})
             await user.save()
-            return {
-                isSignUp: true,
-                message: 'Registration complete!',
-                date: new Date().toISOString()
-            };
-        } catch (e) {
-            console.log(e);
-            return{
-                isSignUp: true,
-                message: "Something went wrong on the server",
-                date: new Date().toISOString()
-            }
+        } catch (error) {
+             console.error(error)
+             throw error
         }
         
 
     }
-
-    // static echo(message: string): EchoMessage {
-    //     return {
-    //         message,
-    //         date: new Date().toISOString(),
-    //         isEcho: true
-    //     };
-    // }
-    
+    static async findUserByEmail(email: string) { 
+       try { 
+        const user = await userModel.findOne({email})
+        if(user) { return user }
+        return false
+       } catch (error) {
+            console.error(error);
+            throw error
+       }
+    }
 }   

@@ -16,3 +16,21 @@ export type SignUpMessage= {
     message: string,
     date: string
 }
+export type SignInMessage = {
+    isSignIn: boolean,
+    message: string,
+    JWT: string,
+    date: string
+}
+export type AuthMeMessage = {
+    id: string,
+    username: string,
+    email:string,
+    date: string
+}
+export type JWTData = {
+    id: string,
+    username: string,
+    email:string
+
+}

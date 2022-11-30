@@ -69,9 +69,123 @@
                     }
                 }
             }
+        },
+        "/signup": {
+            "post": {
+                "tags": ["Authorization"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SignUp"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Registration",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SignUp" 
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "429": {
+                        "description": "Too Many Requests."
+                    }
+                }
+            }
+        },
+        "/signin": {
+            "post": {
+                "tags": ["Authorization"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SignIn"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Registration",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SignIn" 
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "429": {
+                        "description": "Too Many Requests."
+                    }
+                }
+            }
+        },
+        "/authme": {
+            "get": {
+                "tags": ["Authorization"],
+                "responses": {
+                    "200": {
+                        "description": "Return hello message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthMe" 
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "429": {
+                        "description": "Too Many Requests."
+                    }
+                    
+                },
+                "security": [
+                     {
+                     "bearerAuth": []
+                     }
+                     ]
+                    
+            }
         }
+
     },
     "components": {
+         "securitySchemes": {
+             "bearerAuth": {
+             "type": "http",
+             "description": "JWT Authorization header using the Bearer scheme.",
+             "scheme": "bearer",
+             "bearerFormat": "JWT"
+             }
+             },
         "schemas": {
             "Message": {
                 "type": "object",
@@ -83,6 +197,93 @@
                         "type": "string",
                         "format": "Date"
                     }
+                }
+            },
+            "AuthMe": {
+                "type": "object",
+                "properties": {
+                    "id":{
+                        "type": "string"
+                    },                   
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "Date"
+                    }
+                }
+            },
+            "SignUp": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "required": "true",
+                        "writeOnly": "true"
+                    },
+                    "username": {
+                        "type": "string",
+                        "required": "true",
+                        "writeOnly": "true"
+                    },
+                    "password":{
+                        "type": "string",
+                        "required": "true",
+                        "writeOnly": "true"
+                    },
+                    "message":{
+                        "type": "string",
+                        "readOnly":true
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "Date",
+                        "readOnly": true
+                    },
+                    "isSignUp": {
+                        "type": "boolean",
+                        "default": "true",
+                        "readOnly": true
+                    }
+
+                }
+            },
+            "SignIn": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "required": "true",
+                        "writeOnly": "true"
+                    },
+                    "password":{
+                        "type": "string",
+                        "required": "true",
+                        "writeOnly": "true"
+                    },
+                    "message":{
+                        "type": "string",
+                        "readOnly":true
+                    },
+                    "JWT": {
+                        "type": "string",
+                        "readOnly":true
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "Date",
+                        "readOnly": true
+                    },
+                    "isSignIn": {
+                        "type": "boolean",
+                        "default": "true",
+                        "readOnly": true
+                    }
+
                 }
             },
             "EchoMessage": {
