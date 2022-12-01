@@ -14,3 +14,7 @@ export interface IUser{
         files: Types.ObjectId 
     
 }
+
+export interface IJWTData{
+        
+}

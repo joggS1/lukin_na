@@ -205,12 +205,6 @@
                     "id":{
                         "type": "string"
                     },                   
-                    "username": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
                     "date": {
                         "type": "string",
                         "format": "Date"

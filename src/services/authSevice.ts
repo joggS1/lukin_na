@@ -1,11 +1,11 @@
-import { SignInMessage, SignUpMessage, AuthMeMessage, JWTData} from "../ts/types";
+import { SignInMessage, SignUpMessage} from "../ts/types";
+import { Request, Response , NextFunction} from 'express';
 import { userModel } from "../models/userModel";
 import { isPasswordValid } from "../middlewares/hashString";
 import { HttpError } from "../utils/httpError";
-import { generateJWT, decodeJWT } from "../middlewares/JWT";
-import ApiResponseHandler from "../api/http/apiResponseHandler";
+import { generateJWT } from "../middlewares/JWT";
 import UserService from "./userService";
-const bcrypt = require('bcryptjs');
+import ApiResponseHandler from "../api/http/apiResponseHandler";
 
 export default class AuthService {
 
@@ -46,7 +46,7 @@ export default class AuthService {
             return {
                 isSignIn: true,
                 message: 'Authorization complete!',
-                JWT: generateJWT(User.id, User.username, User.email),
+                JWT: generateJWT(User.id),
                 date: new Date().toISOString()
             }
             
@@ -54,20 +54,17 @@ export default class AuthService {
             throw error
         }
     }
-    static async AuthMe(token: string | undefined):Promise<AuthMeMessage>{
-        try {
-            if (!token){ throw new HttpError(401, 'Auth error') }
-            token = token.split(' ')[1]
-            const data = decodeJWT(token) as JWTData
-            return {
-                id: data.id,
-                username: data.username,
-                email: data.email,
-                date: new Date().toISOString()
-            }
-        } catch (error) {
-            throw error
-        }
-    }
+    // static async AuthMe(req: Request, res: Response, next: NextFunction){
+    //     try {
+            
+    //          return res.status(200).send({
+    //             id: req.params.id,
+    //             date: new Date().toISOString()
+    //         })
+    //     } catch (error) {
+            
+    //        next(error)
+    //     }
+    // }
     
 }   

@@ -24,13 +24,5 @@ export type SignInMessage = {
 }
 export type AuthMeMessage = {
     id: string,
-    username: string,
-    email:string,
     date: string
-}
-export type JWTData = {
-    id: string,
-    username: string,
-    email:string
-
 }

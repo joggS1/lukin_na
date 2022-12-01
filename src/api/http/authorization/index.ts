@@ -1,4 +1,6 @@
 import express from 'express';
+import { authMiddleWare } from '../../../middlewares/authMiddleWare';
+
 
 export default (app: express.Application) => {
     app.post(
@@ -11,6 +13,6 @@ export default (app: express.Application) => {
     );
     app.get(
         '/authme', 
-        require('./authMe').default
+        authMiddleWare, require('./authMe').default
     );
 };
